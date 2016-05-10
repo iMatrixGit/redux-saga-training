@@ -1,5 +1,5 @@
-# redux-saga-beginner-tutorial
-Companion Repo for [Redux/Redux-saga beginner tutorial](http://yelouafi.github.io/redux-saga/docs/introduction/BeginnerTutorial.html)
+# redux-saga-training
+Code snippets
 
 # Instructions
 
@@ -7,7 +7,7 @@ Setup
 
 ```
 // clone the repo
-git clone https://github.com/yelouafi/redux-saga-beginner-tutorial.git
+git clone  git@github.com:iMatrixGit/redux-saga-training.git
 
 cd redux-saga-beginner-tutorial
 
@@ -17,7 +17,7 @@ npm install
 Run the demo
 
 ```
-npm start
+npm start:dev
 ```
 
 Run tests
