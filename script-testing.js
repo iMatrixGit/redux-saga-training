@@ -122,3 +122,98 @@ console.log(instruments.map(prefixWithDollar));
 console.log(topics.map(prefixWithHashTag));
 
 //console.log(spotsSelector(state).toJS());
+
+const constrain = ({ low, high, value }) => {
+    if (typeof (low + high + value) !== 'number') {
+      throw new Error('Incorrect arguments types. Expect numbers only.')
+    }
+
+    return Math.min(Math.max(low, value), high);
+};
+
+console.log(constrain({ low: -40, high: -30, value: -20 }));
+
+class Word extends React.Component {
+    constructor() {
+        super();
+
+        this.state = { isVisible: true };
+
+        this.calculateState = this.calculateState.bind(this);
+    }
+
+    componentWillMount() {
+        window.addEventListener('resize', this.calculateState);
+    }
+    componentDidMount() {
+        const { top } = this.wordNode.getBoundingClientRect();
+
+        this.setState({ isVisible: top < 40 });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListenet(this.calculateState);
+    }
+
+    calculateState() {
+        const { top } = this.wordNode && this.wordNode.getBoundingClientRect();
+
+        this.setState({ isVisible: top < 40 });
+    }
+
+    render() {
+        const { text } = this.props;
+        const { isVisible } = this.state;
+        const color = !isVisible ? 'red' : 'black';
+        const className = isVisible ? 'visible' : 'hidden';
+
+        return (
+            <span
+                style={{ color }}
+                ref={node => this.wordNode = node}
+            >
+				{isVisible ? text : null}
+			</span>
+        );
+    }
+}
+
+class WordsWrapper extends React.Component {
+    constructor() {
+        super();
+
+        //this.renderWords = this.renderWords.bind(this);
+    }
+    renderWords = () => {
+        const { text } = this.props;
+        const words = text.split(' ');
+
+        return words.map((word, index) => {
+            if (index === words.length - 1) {
+                return (
+                    <Word
+                        key={index}
+                        text={word}
+                    />
+                );
+            }
+
+            return <Word text={word + ' '} />
+        });
+    }
+
+    render() {
+        return (
+            <div className="words-wrapper">
+                {this.renderWords()}
+            </div>
+        );
+    }
+}
+
+const text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.";
+
+ReactDOM.render(
+    <WordsWrapper text={text} />,
+    document.getElementById('container')
+);
